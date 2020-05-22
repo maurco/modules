@@ -4,8 +4,9 @@
 module "foobar" {
   source = "github.com/maurerlabs/modules/redirect"
   zone_id = ""
+  certificate_arn = ""
+  to = ""
   from_domain = ""
-  to_domain = ""
-  protocol = "https"
+  from_subdomains = [""]
 }
 ```
