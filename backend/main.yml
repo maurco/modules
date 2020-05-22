@@ -38,6 +38,3 @@ Resources:
       AttributeDefinitions:
         - AttributeType: S
           AttributeName: LockID
-Outputs:
-  Name:
-    Value: !Ref AWS::StackName
