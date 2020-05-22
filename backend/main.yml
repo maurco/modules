@@ -1,9 +1,3 @@
-# aws cloudformation deploy \
-#    --template-file main.yml \
-#    --stack-name $(STACK_NAME) \
-#    --no-fail-on-empty-changeset \
-#    --profile $(AWS_PROFILE)
-
 Description: AWS CloudFormation resources for Terraform backend
 Resources:
   BackendBucket:
