@@ -2,7 +2,7 @@
 
 ```hcl
 module "foobar" {
-  source = "github.com/maurerlabs/modules//redirect?ref=v0.1.0"
+  source = "github.com/maurerlabs/modules/redirect"
   zone_id = ""
   from_domain = ""
   to_domain = ""
