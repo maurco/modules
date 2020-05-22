@@ -1,0 +1,43 @@
+# aws cloudformation deploy \
+#    --template-file main.yml \
+#    --stack-name $(STACK_NAME) \
+#    --no-fail-on-empty-changeset \
+#    --capabilities CAPABILITY_NAMED_IAM \
+#    --profile $(AWS_PROFILE)
+
+Description: AWS CloudFormation resources for Terraform backend
+Resources:
+  BackendBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      AccessControl: Private
+      BucketName: !Ref AWS::StackName
+      VersioningConfiguration:
+        Status: Enabled
+      LifecycleConfiguration:
+        Rules:
+        - Status: Enabled
+          NoncurrentVersionExpirationInDays: 90
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+        - ServerSideEncryptionByDefault:
+            SSEAlgorithm: AES256
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+  BackendTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Ref AWS::StackName
+      BillingMode: PAY_PER_REQUEST
+      KeySchema:
+        - KeyType: HASH
+          AttributeName: LockID
+      AttributeDefinitions:
+        - AttributeType: S
+          AttributeName: LockID
+Outputs:
+  Name:
+    Value: !Ref AWS::StackName
