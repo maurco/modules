@@ -4,7 +4,7 @@
 
 ```hcl
 module "foobar" {
-  source = "github.com/maurerlabs/modules/redirect"
+  source = "github.com/maurco/modules/redirect"
 }
 ```
 
@@ -12,6 +12,6 @@ module "foobar" {
 
 ```hcl
 module "foobar" {
-  source = "github.com/maurerlabs/modules//redirect?ref=v0.1.0"
+  source = "github.com/maurco/modules//redirect?ref=v0.1.0"
 }
 ```

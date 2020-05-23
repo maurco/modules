@@ -2,7 +2,7 @@
 
 ```hcl
 module "foobar" {
-  source = "github.com/maurerlabs/modules/certificate"
+  source = "github.com/maurco/modules/certificate"
   zone_id = ""
 }
 ```
