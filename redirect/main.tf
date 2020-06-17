@@ -1,16 +1,16 @@
-locals {
-  s3_origin_id = "s3-origin"
-}
-
 variable "zone_id" {}
 
 variable "certificate_arn" {}
 
-variable "to" {}
-
 variable "from_domain" {}
 
-variable "from_subdomains" {
+variable "to_domain" {}
+
+variable "to_protocol" {
+  default = "https"
+}
+
+variable "aliases" {
   default = []
 }
 

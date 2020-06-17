@@ -1,5 +1,5 @@
 resource "aws_route53_record" "main" {
-  name    = var.from_domain
+  name    = var.domain
   zone_id = var.zone_id
   type    = "A"
 
@@ -14,7 +14,7 @@ resource "aws_route53_record" "main" {
   }
 }
 
-resource "aws_route53_record" "subdomains" {
+resource "aws_route53_record" "alias" {
   count   = length(var.aliases)
   name    = element(var.aliases, count.index)
   zone_id = var.zone_id

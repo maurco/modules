@@ -2,12 +2,12 @@ resource "aws_cloudfront_distribution" "main" {
   enabled             = true
   is_ipv6_enabled     = true
   price_class         = "PriceClass_100"
-  aliases             = concat([var.from_domain], formatlist("%s.${var.from_domain}", var.from_subdomains))
-  comment             = "Redirects to ${var.to}"
+  aliases             = concat([var.from_domain], var.aliases)
+  comment             = "Redirects to ${var.to_domain}"
   wait_for_deployment = false
 
   origin {
-    origin_id   = local.s3_origin_id
+    origin_id   = "s3-origin"
     domain_name = aws_s3_bucket.main.website_endpoint
 
     custom_origin_config {
@@ -19,7 +19,7 @@ resource "aws_cloudfront_distribution" "main" {
   }
 
   default_cache_behavior {
-    target_origin_id       = local.s3_origin_id
+    target_origin_id       = "s3-origin"
     cached_methods         = ["GET", "HEAD"]
     allowed_methods        = ["GET", "HEAD", "OPTIONS"]
     viewer_protocol_policy = "allow-all"
