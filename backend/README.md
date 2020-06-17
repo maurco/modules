@@ -12,10 +12,10 @@ terraform {
 ```
 
 ```bash
-$ curl -Lso .backend.yml https://git.io/Jf2H1
+$ curl -Lso .terraform/backend.yml https://git.io/Jf2H1
 $ aws cloudformation deploy \
+	--template-file .terraform/backend.yml \
 	--no-fail-on-empty-changeset \
-	--template-file .backend.yml \
 	--stack-name $(STACK_NAME) \
 	--profile $(AWS_PROFILE)
 ```
