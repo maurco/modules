@@ -1,3 +1,15 @@
+#/bin/bash
+
+set -e
+
+BACKEND_FILE=$(mktemp -t "co.maur.modules")
+
+if [ -z "$STACK_NAME" ]; then
+	echo "Missing environment variable: STACK_NAME"
+	exit 1
+fi
+
+cat <<EOT >> $BACKEND_FILE
 Description: AWS CloudFormation resources for Terraform backend
 Resources:
   BackendBucket:
@@ -31,3 +43,11 @@ Resources:
       AttributeDefinitions:
         - AttributeType: S
           AttributeName: LockID
+EOT
+
+aws cloudformation deploy \
+	--no-fail-on-empty-changeset \
+	--template-file $BACKEND_FILE \
+	--stack-name $STACK_NAME
+
+rm $BACKEND_FILE
