@@ -18,6 +18,7 @@ module "foobar" {
 
 ## S3 Backend
 
+> `main.tf`
 ```hcl
 terraform {
   backend "s3" {
@@ -26,19 +27,23 @@ terraform {
 }
 ```
 
-```bash
-# required environment variables
-$ export NAME="neat-system"
-$ export AWS_REGION="us-east-1"
-$ export AWS_PROFILE="neat"
+> `Makefile`
+```make
+NAME=
+AWS_REGION=
+AWS_PROFILE=
+ENVIRONMENT=
 
-# creates cloudformation stack for S3 bucket and DynamoDB table
-$ curl -Ls https://git.io/JfdMe | sh
+.EXPORT_ALL_VARIABLES:
+.PHONY: init backend
 
-# initialize the backend with dynamic values
-$ terraform init \
-	-backend-config="bucket=$NAME" \
-	-backend-config="dynamodb_table=$NAME" \
-	-backend-config="region=$AWS_REGION" \
-	-backend-config="profile=$AWS_PROFILE"
+init: backend
+	@cd $(ENVIRONMENT) && terraform init \
+		-backend-config="bucket=$(NAME)" \
+		-backend-config="dynamodb_table=$(NAME)" \
+		-backend-config="region=$(AWS_REGION)" \
+		-backend-config="profile=$(AWS_PROFILE)"
+
+backend:
+	@curl -Ls https://git.io/JfdMe | sh
 ```

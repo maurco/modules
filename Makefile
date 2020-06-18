@@ -1,4 +1,6 @@
 .PHONY: format
 
+all: format
+
 format:
-	terraform fmt -recursive
+	@terraform fmt -recursive
