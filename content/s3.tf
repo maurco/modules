@@ -4,6 +4,7 @@ data "aws_iam_policy_document" "main" {
       "s3:GetObject",
       "s3:ListBucket",
     ]
+
     resources = [
       aws_s3_bucket.main.arn,
       "${aws_s3_bucket.main.arn}/*"
