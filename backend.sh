@@ -4,8 +4,8 @@ set -e
 
 BACKEND_FILE=$(mktemp -t "co.maur.modules")
 
-if [ -z "$STACK_NAME" ]; then
-	echo "Missing environment variable: STACK_NAME"
+if [ -z "$NAME" ]; then
+	echo "Missing environment variable: NAME"
 	exit 1
 fi
 
@@ -48,6 +48,6 @@ EOT
 aws cloudformation deploy \
 	--no-fail-on-empty-changeset \
 	--template-file $BACKEND_FILE \
-	--stack-name $STACK_NAME
+	--stack-name $NAME
 
 rm $BACKEND_FILE
