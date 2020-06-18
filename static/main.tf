@@ -19,3 +19,7 @@ variable "not_found_page" {
 variable "error_page" {
   default = "/500.html"
 }
+
+output "cloudfront_id" {
+  value = aws_cloudfront_distribution.main.id
+}
