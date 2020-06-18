@@ -8,7 +8,7 @@ module "foobar" {
 }
 ```
 
-#### Versioned
+_or to use a versioned module:_
 
 ```hcl
 module "foobar" {
@@ -32,13 +32,12 @@ terraform {
 NAME=
 AWS_REGION=
 AWS_PROFILE=
-ENVIRONMENT=
 
 .EXPORT_ALL_VARIABLES:
 .PHONY: init backend
 
 init: backend
-	@cd $(ENVIRONMENT) && terraform init \
+	@terraform init \
 		-backend-config="bucket=$(NAME)" \
 		-backend-config="dynamodb_table=$(NAME)" \
 		-backend-config="region=$(AWS_REGION)" \
