@@ -45,5 +45,5 @@ init: backend
 		-backend-config="profile=$(AWS_PROFILE)"
 
 backend:
-	@curl -Ls https://git.io/JfdMe | sh
+	@curl -Ls https://git.io/JfdMe | bash
 ```
