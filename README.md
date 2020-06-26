@@ -34,7 +34,10 @@ AWS_REGION=
 AWS_PROFILE=
 
 .EXPORT_ALL_VARIABLES:
-.PHONY: init backend
+.PHONY: backend init
+
+backend:
+	@curl -Ls https://raw.githubusercontent.com/maurco/modules/master/backend.sh | bash
 
 init: backend
 	@terraform init \
@@ -42,7 +45,4 @@ init: backend
 		-backend-config="dynamodb_table=$(NAME)" \
 		-backend-config="region=$(AWS_REGION)" \
 		-backend-config="profile=$(AWS_PROFILE)"
-
-backend:
-	@curl -Ls https://raw.githubusercontent.com/maurco/modules/master/backend.sh | bash
 ```
