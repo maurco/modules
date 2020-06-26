@@ -29,7 +29,7 @@ terraform {
 
 > `Makefile`
 ```make
-NAME=
+STACK_ID=
 AWS_REGION=
 AWS_PROFILE=
 
@@ -41,8 +41,8 @@ backend:
 
 init: backend
 	@terraform init \
-		-backend-config="bucket=$(NAME)" \
-		-backend-config="dynamodb_table=$(NAME)" \
+		-backend-config="bucket=$(STACK_ID)" \
+		-backend-config="dynamodb_table=$(STACK_ID)" \
 		-backend-config="region=$(AWS_REGION)" \
 		-backend-config="profile=$(AWS_PROFILE)"
 ```

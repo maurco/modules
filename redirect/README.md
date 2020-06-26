@@ -8,6 +8,6 @@ module "foobar" {
   from_domain = ""
   to_protocol = "https"
   to_domain = ""
-  aliases = [""]
+  aliases = [""] # optional
 }
 ```
