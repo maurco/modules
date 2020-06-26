@@ -5,6 +5,7 @@ module "foobar" {
   source = "github.com/maurco/modules/static"
   zone_id = ""
   certificate_arn = ""
+  logs_bucket = "" # optional
   domain = ""
   aliases = [""] # optional
   app_page = "" # optional

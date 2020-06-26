@@ -2,6 +2,10 @@ variable "zone_id" {}
 
 variable "certificate_arn" {}
 
+variable "logs_bucket" {
+  default = ""
+}
+
 variable "domain" {}
 
 variable "aliases" {

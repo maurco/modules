@@ -43,6 +43,11 @@ resource "aws_cloudfront_distribution" "main" {
     ssl_support_method  = "sni-only"
   }
 
+  logging_config {
+    bucket = var.logs_bucket
+    prefix = "${var.domain}/"
+  }
+
   restrictions {
     geo_restriction {
       restriction_type = "none"
