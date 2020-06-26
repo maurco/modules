@@ -3,20 +3,24 @@
 set -e
 
 BACKEND_FILE=$(mktemp -t "co.maur.modules")
+STACK_NAME=${STACK_NAME:-terraform}
 
-if [ -z "$NAME" ]; then
-	echo "Missing environment variable: NAME"
+if [ -z "$STACK_ID" ]; then
+	echo "Missing environment variable: STACK_ID"
 	exit 1
 fi
 
 cat <<EOT >> $BACKEND_FILE
 Description: AWS CloudFormation resources for Terraform backend
+Parameters:
+  StackID:
+    Type: String
 Resources:
   BackendBucket:
     Type: AWS::S3::Bucket
     Properties:
       AccessControl: Private
-      BucketName: !Ref AWS::StackName
+      BucketName: !Ref StackID
       VersioningConfiguration:
         Status: Enabled
       LifecycleConfiguration:
@@ -35,7 +39,7 @@ Resources:
   BackendTable:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: !Ref AWS::StackName
+      TableName: !Ref StackID
       BillingMode: PAY_PER_REQUEST
       KeySchema:
         - KeyType: HASH
@@ -47,7 +51,8 @@ EOT
 
 aws cloudformation deploy \
 	--no-fail-on-empty-changeset \
+	--stack-name $STACK_NAME \
 	--template-file $BACKEND_FILE \
-	--stack-name $NAME
+	--parameter-overrides StackID=$STACK_ID
 
 rm $BACKEND_FILE
