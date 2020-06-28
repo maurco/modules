@@ -22,6 +22,7 @@ data "aws_ami" "openvpn" {
 }
 
 resource "aws_key_pair" "main" {
+  key_name   = var.domain
   public_key = var.public_key
 }
 

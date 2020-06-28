@@ -40,7 +40,7 @@ resource "aws_cloudfront_distribution" "main" {
 
   logging_config {
     bucket = var.logs_bucket
-    prefix = "${var.from_domain}/"
+    prefix = "AWSLogs/${data.aws_caller_identity.current.account_id}/CloudFront/${var.from_domain}/"
   }
 
   restrictions {
