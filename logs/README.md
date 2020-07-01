@@ -1,8 +1,15 @@
 # Logs Module
 
-```hcl
-module "foobar" {
-  source = "github.com/maurco/modules/logs"
-  name   = ""
-}
-```
+## Providers
+
+- `aws`
+
+## Variables
+
+- `name`
+
+## Outputs
+
+- `bucket_id`
+- `bucket_arn`
+- `bucket_domain`

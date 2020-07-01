@@ -1,3 +1,11 @@
+terraform {
+  required_version = "~> 0.12"
+
+  required_providers {
+    aws = "~> 2.66"
+  }
+}
+
 variable "name" {}
 
 output "bucket_id" {

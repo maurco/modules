@@ -1,8 +1,12 @@
 data "template_file" "user_data" {
   template = file("${path.module}/user-data.sh")
   vars = {
-    domain = var.domain
-    port   = random_integer.ssh.result
+    port       = random_integer.ssh.result
+    domain     = var.domain
+    cidr_block = var.cidr_block
+    cert       = var.cert
+    ca_bundle  = var.ca_bundle
+    priv_key   = var.priv_key
   }
 }
 

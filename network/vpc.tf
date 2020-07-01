@@ -1,7 +1,3 @@
-locals {
-  subnet_count = length(data.aws_availability_zones.main.names)
-}
-
 data "aws_availability_zones" "main" {
   state = "available"
 }
@@ -10,7 +6,7 @@ resource "aws_vpc" "main" {
   cidr_block           = var.cidr_block
   enable_dns_hostnames = true
   tags = {
-    Name = var.domain
+    Name = var.name
   }
 
   lifecycle {
@@ -21,7 +17,7 @@ resource "aws_vpc" "main" {
 resource "aws_internet_gateway" "main" {
   vpc_id = aws_vpc.main.id
   tags = {
-    Name = var.domain
+    Name = var.name
   }
 }
 
@@ -32,7 +28,7 @@ resource "aws_subnet" "public" {
   cidr_block              = cidrsubnet(aws_vpc.main.cidr_block, ceil(log(local.subnet_count * 2, 2)), count.index + 1)
   map_public_ip_on_launch = true
   tags = {
-    Name = "${var.domain} (public)"
+    Name = "${var.name} (public)"
   }
 }
 
@@ -43,14 +39,14 @@ resource "aws_subnet" "private" {
   cidr_block              = cidrsubnet(aws_vpc.main.cidr_block, ceil(log(local.subnet_count * 2, 2)), local.subnet_count + count.index + 1)
   map_public_ip_on_launch = false
   tags = {
-    Name = "${var.domain} (private)"
+    Name = "${var.name} (private)"
   }
 }
 
 resource "aws_route_table" "public" {
   vpc_id = aws_vpc.main.id
   tags = {
-    Name = "${var.domain} (public)"
+    Name = "${var.name} (public)"
   }
 
   route {
@@ -68,7 +64,7 @@ resource "aws_route_table_association" "public" {
 resource "aws_route_table" "private" {
   vpc_id = aws_vpc.main.id
   tags = {
-    Name = "${var.domain} (private)"
+    Name = "${var.name} (private)"
   }
 }
 

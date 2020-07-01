@@ -1,9 +1,10 @@
-variable "zone_id" {}
+terraform {
+  required_version = "~> 0.12"
 
-variable "certificate_arn" {}
-
-variable "logs_bucket" {
-  default = ""
+  required_providers {
+    aws    = "~> 2.66"
+    random = "~> 2.2"
+  }
 }
 
 variable "domain" {}
@@ -23,6 +24,14 @@ variable "not_found_page" {
 variable "error_page" {
   default = "/500.html"
 }
+
+variable "logs_bucket" {
+  default = ""
+}
+
+variable "certificate_arn" {}
+
+variable "zone_id" {}
 
 output "cloudfront_id" {
   value = aws_cloudfront_distribution.main.id

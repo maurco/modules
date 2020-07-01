@@ -8,6 +8,6 @@ resource "aws_vpc_endpoint" "s3" {
     aws_route_table.public.id,
   ]
   tags = {
-    Name = "${var.domain} (s3)"
+    Name = "${var.name} (s3)"
   }
 }

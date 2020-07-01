@@ -1,10 +1,19 @@
 # Network Module
 
-```hcl
-module "foobar" {
-  source      = "github.com/maurco/modules/network"
-  logs_bucket = "" # optional
-  domain      = ""
-  cidr_block  = ""
-}
-```
+## Providers
+
+- `aws`
+
+## Variables
+
+- `name`
+- `cidr_block = "10.0.0.0/16"`
+- `logs_bucket = ""`
+
+## Outputs
+
+- `vpc_id`
+- `zone_id`
+- `public_subnets`
+- `private_subnets`
+- `private_domain`
