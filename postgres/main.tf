@@ -40,6 +40,10 @@ variable "postgres_version" {
   default = "12.3"
 }
 
+variable "postgres_port" {
+  default = 5432
+}
+
 variable "deletion_protection" {
   default = false
 }
@@ -87,11 +91,9 @@ variable "subnet_ids" {}
 variable "zone_id" {}
 
 output "master_url" {
-  sensitive = true
-  value     = format("postgres://%s:%s@%s/%s?sslmode=require", aws_db_instance.main.username, aws_db_instance.main.password, aws_route53_record.main.fqdn, aws_db_instance.main.name)
+  value = format("postgres://%s:%s@%s:%s/%s?sslmode=require", aws_db_instance.main.username, aws_db_instance.main.password, aws_route53_record.main.fqdn, aws_db_instance.main.port, aws_db_instance.main.name)
 }
 
 output "replica_url" {
-  sensitive = true
-  value     = length(aws_route53_record.read) > 0 ? format("postgres://%s:%s@%s/%s?sslmode=require", aws_db_instance.main.username, aws_db_instance.main.password, aws_route53_record.read[0].fqdn, aws_db_instance.main.name) : null
+  value = length(aws_route53_record.read) > 0 ? format("postgres://%s:%s@%s:%s/%s?sslmode=require", aws_db_instance.main.username, aws_db_instance.main.password, aws_route53_record.read[0].fqdn, aws_db_instance.main.port, aws_db_instance.main.name) : null
 }

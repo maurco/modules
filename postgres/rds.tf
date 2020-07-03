@@ -35,7 +35,7 @@ resource "aws_db_instance" "main" {
   name                                  = var.name
   username                              = random_pet.user.id
   password                              = random_password.pass.result
-  port                                  = 5432
+  port                                  = var.postgres_port
   publicly_accessible                   = false
 }
 
