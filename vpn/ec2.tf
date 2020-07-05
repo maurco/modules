@@ -36,7 +36,7 @@ resource "aws_instance" "main" {
   key_name                             = aws_key_pair.main.id
   subnet_id                            = var.subnet_id
   user_data                            = data.template_file.user_data.rendered
-  vpc_security_group_ids               = [aws_security_group.main.id]
+  vpc_security_group_ids               = concat(var.security_group_ids, [aws_security_group.main.id])
   instance_initiated_shutdown_behavior = "stop"
   tags = {
     Name = var.domain

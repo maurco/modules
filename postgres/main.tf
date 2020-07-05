@@ -80,15 +80,15 @@ variable "performance_insights_retention" {
   default = 0
 }
 
-variable "security_group_ids" {
-  default = []
-}
-
 variable "vpc_id" {}
 
 variable "subnet_ids" {}
 
 variable "zone_id" {}
+
+output "security_group_id" {
+  value = aws_security_group.main.id
+}
 
 output "master_url" {
   value = format("postgres://%s:%s@%s:%s/%s?sslmode=require", aws_db_instance.main.username, aws_db_instance.main.password, aws_route53_record.main.fqdn, aws_db_instance.main.port, aws_db_instance.main.name)

@@ -36,8 +36,8 @@ variable "subnet_id" {}
 
 variable "zone_id" {}
 
-output "security_group_id" {
-  value = aws_security_group.main.id
+variable "security_group_ids" {
+  default = []
 }
 
 output "web_url" {

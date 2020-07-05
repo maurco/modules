@@ -44,15 +44,15 @@ variable "maintenance_window" {
   default = "" # Tue:09:00-Tue:11:00
 }
 
-variable "security_group_ids" {
-  default = []
-}
-
 variable "vpc_id" {}
 
 variable "subnet_ids" {}
 
 variable "zone_id" {}
+
+output "security_group_id" {
+  value = aws_security_group.main.id
+}
 
 output "master_url" {
   value = format("rediss://%s:%s", aws_route53_record.main.fqdn, aws_elasticache_replication_group.main.port)
