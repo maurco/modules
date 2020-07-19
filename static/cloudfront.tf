@@ -1,9 +1,9 @@
 resource "aws_cloudfront_distribution" "main" {
   enabled             = true
   is_ipv6_enabled     = true
-  price_class         = "PriceClass_All"
-  aliases             = concat([var.domain], var.aliases)
   wait_for_deployment = false
+  price_class         = var.price_class
+  aliases             = concat([var.name], var.aliases)
 
   origin {
     origin_id   = "s3-origin"
@@ -45,7 +45,7 @@ resource "aws_cloudfront_distribution" "main" {
 
   logging_config {
     bucket = var.logs_bucket
-    prefix = "AWSLogs/${data.aws_caller_identity.current.account_id}/CloudFront/${var.domain}/"
+    prefix = "AWSLogs/${data.aws_caller_identity.current.account_id}/CloudFront/${var.name}/"
   }
 
   restrictions {
@@ -68,9 +68,9 @@ resource "aws_cloudfront_distribution" "main" {
 
   custom_error_response {
     error_code            = 404
-    response_code         = var.app_page != "" ? 200 : 404
-    response_page_path    = var.app_page != "" ? var.app_page : var.not_found_page
-    error_caching_min_ttl = var.app_page != "" ? 31536000 : 10
+    response_code         = var.app_page == "" ? 404 : 200
+    response_page_path    = var.app_page == "" ? var.not_found_page : var.app_page
+    error_caching_min_ttl = var.app_page == "" ? 10 : 31536000
   }
 
   custom_error_response {

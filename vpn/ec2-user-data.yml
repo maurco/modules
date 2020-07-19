@@ -1,0 +1,52 @@
+#cloud-config
+
+package_update: true
+packages:
+  - awscli
+  - fail2ban
+
+final_message: System ready after $UPTIME seconds
+power_state:
+  mode: poweroff
+
+# prompt for a password change on first login
+write_files:
+  - path: /home/openvpnas/.noob
+    owner: openvpnas:openvpnas
+  - path: /home/openvpnas/.profile
+    append: true
+    content: >
+      if [[ -f /home/openvpnas/.noob ]]; then
+        sudo passwd openvpn
+        rm -f /home/openvpnas/.noob
+      fi
+
+runcmd:
+  # initialize openvpn
+  - ovpn-init --no_reroute_gw --local_auth --batch --force
+  - ln -s /usr/local/openvpn_as/scripts/sacli /usr/local/bin
+  # harden SSH configuration
+  - printf "%s\n" "PermitRootLogin no" "PasswordAuthentication no" >> /etc/ssh/sshd_config
+  - printf "%s\n" "[sshd]" "enabled = true" > /etc/fail2ban/jail.local
+  # accept ssh connections only if it is a new connection
+  - iptables -I INPUT -p tcp --dport 22 -i eth0 -m state --state NEW -m recent --set
+  # make iptables entries persistent on reboot
+  - iptables-save > /etc/iptables.up.rules
+  - printf "@reboot root /bin/bash iptables-restore < /etc/iptables.up.rules" > /etc/cron.d/iptables.up
+  # download and install SSL certificate
+  - aws s3 cp s3://${bucket}/${cert} .
+  - aws s3 cp s3://${bucket}/${full_chain} .
+  - aws s3 cp s3://${bucket}/${priv_key} .
+  - sacli --key "cs.cert" --value_file "${cert}" ConfigPut
+  - sacli --key "cs.ca_bundle" --value_file "${full_chain}" ConfigPut
+  - sacli --key "cs.priv_key" --value_file "${priv_key}" ConfigPut
+  - rm ${cert} ${full_chain} ${priv_key}
+  # additional openvpn configuration
+  - sacli --key "host.name" --value "${name}" ConfigPut
+  - sacli --key "vpn.client.routing.reroute_gw" --value "false" ConfigPut
+  - sacli --key "vpn.client.routing.inter_client" --value "false" ConfigPut
+  - sacli --key "vpn.client.routing.reroute_dns" --value "true" ConfigPut
+  - sacli --key "vpn.server.routing.gateway_access" --value "false" ConfigPut
+  - sacli --key "vpn.server.routing.private_network.0" --value "${cidr_block}" ConfigPut
+  # apply new configuration
+  - sacli start

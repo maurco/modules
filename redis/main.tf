@@ -2,13 +2,12 @@ terraform {
   required_version = "~> 0.12"
 
   required_providers {
-    aws = "~> 2.66"
+    aws    = "~> 2.66"
+    random = "~> 2.2"
   }
 }
 
 variable "name" {}
-
-variable "domain" {}
 
 variable "instance_type" {}
 
@@ -24,12 +23,12 @@ variable "read_replicas" {
   default = 0
 }
 
-variable "multi_az" {
-  default = false
-}
+# variable "multi_az" {
+#   default = false
+# }
 
 variable "automatic_failover" {
-  default = null
+  default = false
 }
 
 variable "backup_retention" {
@@ -37,11 +36,13 @@ variable "backup_retention" {
 }
 
 variable "backup_window" {
-  default = "" # 07:00-09:00
+  default     = ""
+  description = "07:00-09:00"
 }
 
 variable "maintenance_window" {
-  default = "" # Tue:09:00-Tue:11:00
+  default     = ""
+  description = "Tue:09:00-Tue:11:00"
 }
 
 variable "vpc_id" {}

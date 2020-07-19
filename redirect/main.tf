@@ -2,13 +2,14 @@ terraform {
   required_version = "~> 0.12"
 
   required_providers {
-    aws = "~> 2.66"
+    aws    = "~> 2.66"
+    random = "~> 2.2"
   }
 }
 
-variable "from_domain" {}
+variable "from_name" {}
 
-variable "to_domain" {}
+variable "to_name" {}
 
 variable "to_protocol" {
   default = "https"
@@ -16,6 +17,10 @@ variable "to_protocol" {
 
 variable "aliases" {
   default = []
+}
+
+variable "price_class" {
+  default = "PriceClass_100"
 }
 
 variable "logs_bucket" {

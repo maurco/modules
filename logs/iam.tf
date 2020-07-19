@@ -1,5 +1,3 @@
-data "aws_elb_service_account" "main" {}
-
 data "aws_iam_policy_document" "main" {
   statement {
     actions   = ["s3:GetBucketAcl"]
@@ -7,6 +5,7 @@ data "aws_iam_policy_document" "main" {
 
     principals {
       type = "Service"
+
       identifiers = [
         "cloudtrail.amazonaws.com",
         "delivery.logs.amazonaws.com",
@@ -19,16 +18,17 @@ data "aws_iam_policy_document" "main" {
     resources = ["${aws_s3_bucket.main.arn}/AWSLogs/*"]
 
     principals {
-      type        = "AWS"
-      identifiers = [data.aws_elb_service_account.main.arn]
-    }
-
-    principals {
       type = "Service"
+
       identifiers = [
         "cloudtrail.amazonaws.com",
         "delivery.logs.amazonaws.com",
       ]
+    }
+
+    principals {
+      type        = "AWS"
+      identifiers = [data.aws_elb_service_account.main.arn]
     }
 
     condition {

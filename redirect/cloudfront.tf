@@ -1,10 +1,9 @@
 resource "aws_cloudfront_distribution" "main" {
   enabled             = true
   is_ipv6_enabled     = true
-  price_class         = "PriceClass_100"
-  aliases             = concat([var.from_domain], var.aliases)
-  comment             = "Redirects to ${var.to_domain}"
   wait_for_deployment = false
+  price_class         = var.price_class
+  aliases             = concat([var.from_name], var.aliases)
 
   origin {
     origin_id   = "s3-origin"
@@ -15,6 +14,11 @@ resource "aws_cloudfront_distribution" "main" {
       https_port             = 443
       origin_ssl_protocols   = ["TLSv1"]
       origin_protocol_policy = "http-only"
+    }
+
+    custom_header {
+      name  = "Referer"
+      value = random_password.main.result
     }
   }
 
@@ -40,7 +44,7 @@ resource "aws_cloudfront_distribution" "main" {
 
   logging_config {
     bucket = var.logs_bucket
-    prefix = "AWSLogs/${data.aws_caller_identity.current.account_id}/CloudFront/${var.from_domain}/"
+    prefix = "AWSLogs/${data.aws_caller_identity.current.account_id}/CloudFront/${var.from_name}/"
   }
 
   restrictions {

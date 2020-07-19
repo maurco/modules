@@ -6,22 +6,22 @@ resource "aws_s3_bucket" "main" {
     enabled = true
 
     transition {
-      days          = 90 # 3 months
+      days          = var.standard_ia
       storage_class = "STANDARD_IA"
     }
 
     transition {
-      days          = 365 # one year
+      days          = var.glacier
       storage_class = "GLACIER"
     }
 
     transition {
-      days          = 730 # two years
+      days          = var.deep_archive
       storage_class = "DEEP_ARCHIVE"
     }
 
     expiration {
-      days = 1825 # 5 years
+      days = var.expiration
     }
   }
 

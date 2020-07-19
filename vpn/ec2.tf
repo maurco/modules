@@ -1,56 +1,62 @@
 data "template_file" "user_data" {
-  template = file("${path.module}/user-data.sh")
+  template = file("${path.module}/ec2-user-data.yml")
   vars = {
-    port       = random_integer.ssh.result
-    domain     = var.domain
-    cidr_block = var.cidr_block
-    cert       = var.cert
-    ca_bundle  = var.ca_bundle
-    priv_key   = var.priv_key
+    name       = var.name
+    bucket     = var.certificate_bucket
+    cert       = var.cert_path
+    full_chain = var.full_chain_path
+    priv_key   = var.priv_key_path
+    cidr_block = data.aws_vpc.main.cidr_block
   }
 }
 
-data "aws_ami" "openvpn" {
+data "aws_ami" "vpn" {
   most_recent = true
   owners      = ["679593333241"]
 
   filter {
-    name   = "name"
-    values = ["OpenVPN Access Server 2.*"]
+    name   = "root-device-type"
+    values = ["ebs"]
   }
 
   filter {
     name   = "virtualization-type"
     values = ["hvm"]
   }
+
+  filter {
+    name   = "name"
+    values = ["OpenVPN Access Server 2.*"]
+  }
 }
 
 resource "aws_key_pair" "main" {
-  key_name   = var.domain
   public_key = var.public_key
 }
 
-resource "aws_instance" "main" {
-  ami                                  = data.aws_ami.openvpn.id
-  instance_type                        = var.instance_type
-  key_name                             = aws_key_pair.main.id
-  subnet_id                            = var.subnet_id
-  user_data                            = data.template_file.user_data.rendered
-  vpc_security_group_ids               = concat(var.security_group_ids, [aws_security_group.main.id])
-  instance_initiated_shutdown_behavior = "stop"
-  tags = {
-    Name = var.domain
-  }
+resource "aws_eip" "main" {
+  vpc = true
 
   lifecycle {
     create_before_destroy = true
   }
 }
 
-resource "aws_eip" "main" {
-  vpc = true
+resource "aws_instance" "main" {
+  ami                                  = data.aws_ami.vpn.id
+  instance_type                        = var.instance_type
+  subnet_id                            = var.subnet_id
+  user_data_base64                     = base64encode(data.template_file.user_data.rendered)
+  iam_instance_profile                 = aws_iam_instance_profile.main.id
+  vpc_security_group_ids               = concat(var.security_group_ids, [aws_security_group.main.id])
+  key_name                             = aws_key_pair.main.id
+  instance_initiated_shutdown_behavior = "stop"
   tags = {
-    Name = var.domain
+    Name = var.name
+  }
+
+  lifecycle {
+    create_before_destroy = true
   }
 }
 

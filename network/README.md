@@ -7,7 +7,8 @@
 ## Variables
 
 - `name`
-- `cidr_block = "10.0.0.0/16"`
+- `cidr_block = "10.10.0.0/16"`
+- `logs_traffic_type = "ALL"`
 - `logs_bucket = ""`
 
 ## Outputs

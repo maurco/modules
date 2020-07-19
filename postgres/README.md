@@ -8,13 +8,13 @@
 ## Variables
 
 - `name`
-- `domain`
 - `instance_type`
 - `instance_type_replica = ""`
+- `read_replicas = 0`
 - `postgres_version = "12.3"`
 - `deletion_protection = false`
-- `read_replicas = 0`
 - `multi_az = false`
+- `allocated_storage = 20`
 - `backup_retention = 0`
 - `backup_window = ""`
 - `maintenance_window = ""`
@@ -28,5 +28,6 @@
 
 ## Outputs
 
+- `security_group_id`
 - `master_url`
 - `replica_url`

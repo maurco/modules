@@ -37,7 +37,7 @@ AWS_PROFILE=
 .PHONY: backend init
 
 backend:
-	@curl -Ls https://raw.githubusercontent.com/maurco/modules/master/backend.sh | bash
+	@curl -Ls https://raw.githubusercontent.com/maurco/modules/master/backend.sh | sh
 
 init: backend
 	@terraform init \

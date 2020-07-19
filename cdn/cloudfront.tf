@@ -1,16 +1,12 @@
-data "aws_caller_identity" "current" {}
-
-resource "aws_cloudfront_origin_access_identity" "main" {
-  comment = var.domain
-}
+resource "aws_cloudfront_origin_access_identity" "main" {}
 
 resource "aws_cloudfront_distribution" "main" {
   enabled             = true
   is_ipv6_enabled     = true
-  price_class         = "PriceClass_All"
-  aliases             = [var.domain]
-  default_root_object = length(aws_s3_bucket_object.index) > 0 ? aws_s3_bucket_object.index[0].id : null
   wait_for_deployment = false
+  price_class         = var.price_class
+  default_root_object = length(aws_s3_bucket_object.index) > 0 ? aws_s3_bucket_object.index[0].id : null
+  aliases             = [var.name]
 
   origin {
     origin_id   = "s3-origin"
@@ -38,12 +34,12 @@ resource "aws_cloudfront_distribution" "main" {
   }
 
   ordered_cache_behavior {
-    path_pattern           = "${var.private_prefix}/*"
+    path_pattern           = "${var.private_prefix}*"
     target_origin_id       = "s3-origin"
     cached_methods         = ["GET", "HEAD"]
     allowed_methods        = ["GET", "HEAD", "OPTIONS"]
     viewer_protocol_policy = "redirect-to-https"
-    trusted_signers        = ["self"]
+    trusted_signers        = var.private_signers
     compress               = true
 
     forwarded_values {
@@ -62,7 +58,7 @@ resource "aws_cloudfront_distribution" "main" {
 
   logging_config {
     bucket = var.logs_bucket
-    prefix = "AWSLogs/${data.aws_caller_identity.current.account_id}/CloudFront/${var.domain}/"
+    prefix = "AWSLogs/${data.aws_caller_identity.current.account_id}/CloudFront/${var.name}/"
   }
 
   restrictions {

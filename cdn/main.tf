@@ -6,18 +6,34 @@ terraform {
   }
 }
 
-variable "domain" {}
+variable "name" {}
 
-variable "redirect_root_to" {
+variable "price_class" {
+  default = "PriceClass_All"
+}
+
+variable "redirect_root" {
   default = ""
 }
 
 variable "private_prefix" {
-  default = "private"
+  default = "private/"
 }
 
-variable "noncurrent_version_expiration" {
+variable "private_signers" {
+  default = ["self"]
+}
+
+variable "noncurrent_expiration" {
   default = 14
+}
+
+variable "index_html" {
+  default = ""
+}
+
+variable "not_found_html" {
+  default = ""
 }
 
 variable "logs_bucket" {
@@ -27,6 +43,10 @@ variable "logs_bucket" {
 variable "certificate_arn" {}
 
 variable "zone_id" {}
+
+output "bucket_id" {
+  value = aws_s3_bucket.main.id
+}
 
 output "cloudfront_id" {
   value = aws_cloudfront_distribution.main.id

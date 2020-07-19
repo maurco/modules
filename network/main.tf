@@ -13,7 +13,11 @@ locals {
 variable "name" {}
 
 variable "cidr_block" {
-  default = "10.0.0.0/16"
+  default = "10.10.0.0/16"
+}
+
+variable "logs_traffic_type" {
+  default = "ALL"
 }
 
 variable "logs_bucket" {

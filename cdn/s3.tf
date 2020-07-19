@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "main" {
-  bucket = var.domain
+  bucket = var.name
   acl    = "private"
 
   versioning {
@@ -10,7 +10,7 @@ resource "aws_s3_bucket" "main" {
     enabled = true
 
     noncurrent_version_expiration {
-      days = var.noncurrent_version_expiration
+      days = var.noncurrent_expiration
     }
   }
 
@@ -21,10 +21,6 @@ resource "aws_s3_bucket" "main" {
       }
     }
   }
-
-  lifecycle {
-    create_before_destroy = true
-  }
 }
 
 resource "aws_s3_bucket_policy" "main" {
@@ -33,19 +29,19 @@ resource "aws_s3_bucket_policy" "main" {
 }
 
 resource "aws_s3_bucket_object" "index" {
-  count        = var.redirect_root_to == "" ? 0 : 1
+  count        = var.redirect_root == "" ? 0 : 1
   bucket       = aws_s3_bucket.main.id
   key          = "index.html"
   content_type = "text/html"
-  content      = <<EOT
+  content      = var.index_html != "" ? var.index_html : <<EOT
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta http-equiv="refresh" content="0;URL='${var.redirect_root_to}'" />
+  <meta http-equiv="refresh" content="0;URL='${var.redirect_root}'" />
 </head>
 <body>
-  <code>Redirecting to ${var.redirect_root_to}</code>
+  <code>Redirecting to ${var.redirect_root}</code>
 </body>
 </html>
 EOT
@@ -55,7 +51,7 @@ resource "aws_s3_bucket_object" "not_found" {
   bucket       = aws_s3_bucket.main.id
   key          = "404.html"
   content_type = "text/html"
-  content      = <<EOT
+  content      = var.not_found_html != "" ? var.not_found_html : <<EOT
 <!DOCTYPE html>
 <html lang="en">
 <head>

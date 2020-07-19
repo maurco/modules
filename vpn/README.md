@@ -2,29 +2,29 @@
 
 #### Todo
 
-- Set up self-signed certificate authentication instead of password
-- Use Packer to build an image rather than user data
+- Connect to RDS instance rather than SQLite
+- Set up self-signed certificate authentication for OpenVPN instead of password
 
 ## Providers
 
 - `aws`
-- `random`
 - `template`
 
 ## Variables
 
-- `domain`
+- `name`
 - `instance_type`
 - `public_key`
-- `cert = ""`
-- `ca_bundle = ""`
-- `priv_key = ""`
+- `certificate_bucket`
+- `cert_path = "cert.pem"`
+- `full_chain_path = "fullchain.pem"`
+- `priv_key_path = "privkey.pem"`
 - `vpc_id`
 - `subnet_id`
 - `zone_id`
+- `security_group_ids`
 
 ## Outputs
 
-- `security_group_id`
 - `web_url`
-- `ssh_command`
+- `ssh_url`

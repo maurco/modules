@@ -7,10 +7,14 @@ terraform {
   }
 }
 
-variable "domain" {}
+variable "name" {}
 
 variable "aliases" {
   default = []
+}
+
+variable "price_class" {
+  default = "PriceClass_All"
 }
 
 variable "app_page" {
@@ -32,6 +36,10 @@ variable "logs_bucket" {
 variable "certificate_arn" {}
 
 variable "zone_id" {}
+
+output "bucket_id" {
+  value = aws_s3_bucket.main.id
+}
 
 output "cloudfront_id" {
   value = aws_cloudfront_distribution.main.id

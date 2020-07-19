@@ -1,13 +1,9 @@
 resource "aws_s3_bucket" "main" {
-  bucket        = var.from_domain
+  bucket        = var.from_name
   force_destroy = true
 
   website {
-    redirect_all_requests_to = "${var.to_protocol}://${var.to_domain}"
-  }
-
-  lifecycle {
-    create_before_destroy = true
+    redirect_all_requests_to = "${var.to_protocol}://${var.to_name}"
   }
 }
 

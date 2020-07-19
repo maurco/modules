@@ -1,5 +1,5 @@
 resource "acme_registration" "main" {
-  email_address   = var.email_address
+  email_address   = var.email
   account_key_pem = tls_private_key.reg.private_key_pem
 }
 

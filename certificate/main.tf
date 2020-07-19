@@ -14,20 +14,30 @@ locals {
 
 variable "name" {}
 
-variable "email_address" {}
+variable "email" {}
+
+variable "logs_bucket" {}
 
 variable "zone_id" {}
 
-output "cert_pem" {
-  value = acme_certificate.main.certificate_pem
+output "cert_url" {
+  value = "s3://${aws_s3_bucket.main.id}/${aws_s3_bucket_object.cert.id}"
 }
 
-output "ca_bundle" {
-  value = "${acme_certificate.main.certificate_pem}${acme_certificate.main.issuer_pem}"
+output "chain_url" {
+  value = "s3://${aws_s3_bucket.main.id}/${aws_s3_bucket_object.chain.id}"
 }
 
-output "priv_key" {
-  value = tls_private_key.main.private_key_pem
+output "fullchain_url" {
+  value = "s3://${aws_s3_bucket.main.id}/${aws_s3_bucket_object.fullchain.id}"
+}
+
+output "privkey_url" {
+  value = "s3://${aws_s3_bucket.main.id}/${aws_s3_bucket_object.privkey.id}"
+}
+
+output "bucket_id" {
+  value = aws_s3_bucket.main.id
 }
 
 output "certificate_arn" {

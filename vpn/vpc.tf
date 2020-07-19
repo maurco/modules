@@ -1,12 +1,13 @@
+data "aws_vpc" "main" {
+  id = var.vpc_id
+}
+
 resource "aws_security_group" "main" {
   vpc_id = var.vpc_id
-  tags = {
-    Name = var.domain
-  }
 
   ingress {
-    from_port   = random_integer.ssh.result
-    to_port     = random_integer.ssh.result
+    from_port   = 22
+    to_port     = 22
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -21,6 +22,13 @@ resource "aws_security_group" "main" {
   ingress {
     from_port   = 943
     to_port     = 943
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 945
+    to_port     = 945
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }

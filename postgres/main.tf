@@ -28,12 +28,14 @@ locals {
 
 variable "name" {}
 
-variable "domain" {}
-
 variable "instance_type" {}
 
 variable "instance_type_replica" {
   default = ""
+}
+
+variable "read_replicas" {
+  default = 0
 }
 
 variable "postgres_version" {
@@ -48,12 +50,12 @@ variable "deletion_protection" {
   default = false
 }
 
-variable "read_replicas" {
-  default = 0
-}
-
 variable "multi_az" {
   default = false
+}
+
+variable "allocated_storage" {
+  default = 20
 }
 
 variable "backup_retention" {
@@ -61,11 +63,13 @@ variable "backup_retention" {
 }
 
 variable "backup_window" {
-  default = "" # 07:00-09:00
+  default     = ""
+  description = "07:00-09:00"
 }
 
 variable "maintenance_window" {
-  default = "" # Tue:09:00-Tue:11:00
+  default     = ""
+  description = "Tue:09:00-Tue:11:00"
 }
 
 variable "monitoring_interval" {
