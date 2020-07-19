@@ -20,24 +20,24 @@ variable "logs_bucket" {}
 
 variable "zone_id" {}
 
-output "cert_url" {
-  value = "s3://${aws_s3_bucket.main.id}/${aws_s3_bucket_object.cert.id}"
-}
-
-output "chain_url" {
-  value = "s3://${aws_s3_bucket.main.id}/${aws_s3_bucket_object.chain.id}"
-}
-
-output "fullchain_url" {
-  value = "s3://${aws_s3_bucket.main.id}/${aws_s3_bucket_object.fullchain.id}"
-}
-
-output "privkey_url" {
-  value = "s3://${aws_s3_bucket.main.id}/${aws_s3_bucket_object.privkey.id}"
-}
-
 output "bucket_id" {
   value = aws_s3_bucket.main.id
+}
+
+output "bucket_path_cert" {
+  value = aws_s3_bucket_object.cert.id
+}
+
+output "bucket_path_chain" {
+  value = aws_s3_bucket_object.chain.id
+}
+
+output "bucket_path_full_chain" {
+  value = aws_s3_bucket_object.fullchain.id
+}
+
+output "bucket_path_priv_key" {
+  value = aws_s3_bucket_object.privkey.id
 }
 
 output "certificate_arn" {

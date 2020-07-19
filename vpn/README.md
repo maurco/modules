@@ -16,9 +16,9 @@
 - `instance_type`
 - `public_key`
 - `certificate_bucket`
-- `cert_path = "cert.pem"`
-- `full_chain_path = "fullchain.pem"`
-- `priv_key_path = "privkey.pem"`
+- `certificate_cert = "cert.pem"`
+- `certificate_full_chain = "fullchain.pem"`
+- `certificate_priv_key = "privkey.pem"`
 - `vpc_id`
 - `subnet_id`
 - `zone_id`

@@ -3,9 +3,9 @@ data "template_file" "user_data" {
   vars = {
     name       = var.name
     bucket     = var.certificate_bucket
-    cert       = var.cert_path
-    full_chain = var.full_chain_path
-    priv_key   = var.priv_key_path
+    cert       = var.certificate_cert
+    full_chain = var.certificate_full_chain
+    priv_key   = var.certificate_priv_key
     cidr_block = data.aws_vpc.main.cidr_block
   }
 }

@@ -15,15 +15,15 @@ variable "public_key" {}
 
 variable "certificate_bucket" {}
 
-variable "cert_path" {
+variable "certificate_cert" {
   default = "cert.pem"
 }
 
-variable "full_chain_path" {
+variable "certificate_full_chain" {
   default = "fullchain.pem"
 }
 
-variable "priv_key_path" {
+variable "certificate_priv_key" {
   default = "privkey.pem"
 }
 

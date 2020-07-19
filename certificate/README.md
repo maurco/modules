@@ -15,9 +15,9 @@
 
 ## Outputs
 
-- `cert_url`
-- `chain_url`
-- `fullchain_url`
-- `privkey_url`
 - `bucket_id`
+- `bucket_path_cert`
+- `bucket_path_chain`
+- `bucket_path_full_chain`
+- `bucket_path_priv_key`
 - `certificate_arn`
