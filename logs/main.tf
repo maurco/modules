@@ -1,10 +1,17 @@
 terraform {
-  required_version = "~> 0.12"
+  required_version = "~> 0.13"
 
   required_providers {
-    aws = "~> 2.66"
+    aws = {
+      version = "~> 3"
+      source  = "hashicorp/aws"
+    }
   }
 }
+
+/**
+ * Variables
+ */
 
 variable "name" {}
 
@@ -23,6 +30,10 @@ variable "deep_archive" {
 variable "expiration" {
   default = 1825 # 5 years
 }
+
+/**
+ * Outputs
+ */
 
 output "bucket_id" {
   value = aws_s3_bucket.main.id

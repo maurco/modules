@@ -1,24 +1,45 @@
 terraform {
-  required_version = "~> 0.12"
+  required_version = "~> 0.13"
 
   required_providers {
-    acme = "~> 1.5"
-    aws  = "~> 2.66"
-    tls  = "~> 2.1"
+    acme = {
+      version = "~> 1"
+      source  = "terraform-providers/acme"
+    }
+
+    aws = {
+      version = "~> 3"
+      source  = "hashicorp/aws"
+    }
+
+    tls = {
+      version = "~> 2"
+      source  = "hashicorp/tls"
+    }
   }
+}
+
+/**
+ * Variables
+ */
+
+variable "name" {}
+
+variable "email" {}
+
+variable "zone_id" {}
+
+variable "logs_bucket" {
+  default = ""
 }
 
 locals {
   domain = trim(data.aws_route53_zone.main.name, ".")
 }
 
-variable "name" {}
-
-variable "email" {}
-
-variable "logs_bucket" {}
-
-variable "zone_id" {}
+/**
+ * Ouputs
+ */
 
 output "bucket_id" {
   value = aws_s3_bucket.main.id
@@ -38,8 +59,4 @@ output "bucket_path_full_chain" {
 
 output "bucket_path_priv_key" {
   value = aws_s3_bucket_object.privkey.id
-}
-
-output "certificate_arn" {
-  value = aws_acm_certificate_validation.main.certificate_arn
 }

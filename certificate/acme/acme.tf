@@ -4,8 +4,8 @@ resource "acme_registration" "main" {
 }
 
 resource "acme_certificate" "main" {
-  account_key_pem         = acme_registration.main.account_key_pem
   certificate_request_pem = tls_cert_request.main.cert_request_pem
+  account_key_pem         = acme_registration.main.account_key_pem
 
   dns_challenge {
     provider = "route53"

@@ -14,9 +14,13 @@ resource "aws_s3_bucket" "main" {
     }
   }
 
-  logging {
-    target_bucket = var.logs_bucket
-    target_prefix = "AWSLogs/${data.aws_caller_identity.main.account_id}/S3/${var.name}/"
+  dynamic "logging" {
+    for_each = var.logs_bucket == "" ? [] : [var.logs_bucket]
+
+    content {
+      target_bucket = logging.value
+      target_prefix = "AWSLogs/${data.aws_caller_identity.main.account_id}/S3/${var.name}/"
+    }
   }
 
   server_side_encryption_configuration {
@@ -37,25 +41,25 @@ resource "aws_s3_bucket_public_access_block" "main" {
 }
 
 resource "aws_s3_bucket_object" "cert" {
+  key     = "${local.domain}/cert.pem"
   bucket  = aws_s3_bucket.main.id
-  key     = "cert.pem"
   content = acme_certificate.main.certificate_pem
 }
 
 resource "aws_s3_bucket_object" "chain" {
+  key     = "${local.domain}/chain.pem"
   bucket  = aws_s3_bucket.main.id
-  key     = "chain.pem"
   content = acme_certificate.main.issuer_pem
 }
 
 resource "aws_s3_bucket_object" "fullchain" {
+  key     = "${local.domain}/fullchain.pem"
   bucket  = aws_s3_bucket.main.id
-  key     = "fullchain.pem"
   content = "${acme_certificate.main.certificate_pem}${acme_certificate.main.issuer_pem}"
 }
 
 resource "aws_s3_bucket_object" "privkey" {
+  key     = "${local.domain}/privkey.pem"
   bucket  = aws_s3_bucket.main.id
-  key     = "privkey.pem"
   content = tls_private_key.main.private_key_pem
 }

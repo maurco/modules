@@ -2,16 +2,16 @@
 
 ## Providers
 
-- `aws`
 - `acme`
+- `aws`
 - `tls`
 
 ## Variables
 
 - `name`
 - `email`
-- `logs_bucket`
 - `zone_id`
+- `logs_bucket = ""`
 
 ## Outputs
 
@@ -20,4 +20,3 @@
 - `bucket_path_chain`
 - `bucket_path_full_chain`
 - `bucket_path_priv_key`
-- `certificate_arn`
