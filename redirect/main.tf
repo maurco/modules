@@ -1,13 +1,28 @@
 terraform {
-  required_version = "~> 0.12"
+  required_version = "~> 0.13"
 
   required_providers {
-    aws    = "~> 2.66"
-    random = "~> 2.2"
+    aws = {
+      version = "~> 3"
+      source  = "hashicorp/aws"
+    }
+
+    random = {
+      version = "~> 2"
+      source  = "hashicorp/random"
+    }
   }
 }
 
+/**
+ * Variables
+ */
+
 variable "from_name" {}
+
+variable "from_aliases" {
+  default = []
+}
 
 variable "to_name" {}
 
@@ -15,21 +30,21 @@ variable "to_protocol" {
   default = "https"
 }
 
-variable "aliases" {
-  default = []
-}
-
 variable "price_class" {
   default = "PriceClass_100"
-}
-
-variable "logs_bucket" {
-  default = ""
 }
 
 variable "certificate_arn" {}
 
 variable "zone_id" {}
+
+variable "logs_bucket" {
+  default = ""
+}
+
+/**
+ * Outputs
+ */
 
 output "cloudfront_id" {
   value = aws_cloudfront_distribution.main.id

@@ -3,7 +3,7 @@ resource "aws_cloudfront_distribution" "main" {
   is_ipv6_enabled     = true
   wait_for_deployment = false
   price_class         = var.price_class
-  aliases             = concat([var.name], var.aliases)
+  aliases             = [var.name]
 
   origin {
     origin_id   = "s3-origin"
@@ -43,9 +43,13 @@ resource "aws_cloudfront_distribution" "main" {
     ssl_support_method  = "sni-only"
   }
 
-  logging_config {
-    bucket = var.logs_bucket
-    prefix = "AWSLogs/${data.aws_caller_identity.current.account_id}/CloudFront/${var.name}/"
+  dynamic "logging_config" {
+    for_each = var.logs_bucket == "" ? [] : [var.logs_bucket]
+
+    content {
+      bucket = logging_config.value
+      prefix = "AWSLogs/${data.aws_caller_identity.current.account_id}/CloudFront/${var.name}/"
+    }
   }
 
   restrictions {

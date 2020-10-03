@@ -8,9 +8,9 @@
 ## Variables
 
 - `from_name`
+- `from_aliases = []`
 - `to_name`
 - `to_protocol = "https"`
-- `aliases = []`
 - `price_class = "PriceClass_100"`
 - `logs_bucket = ""`
 - `certificate_arn`

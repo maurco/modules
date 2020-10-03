@@ -1,17 +1,24 @@
 terraform {
-  required_version = "~> 0.12"
+  required_version = "~> 0.13"
 
   required_providers {
-    aws    = "~> 2.66"
-    random = "~> 2.2"
+    aws = {
+      version = "~> 3"
+      source  = "hashicorp/aws"
+    }
+
+    random = {
+      version = "~> 2"
+      source  = "hashicorp/random"
+    }
   }
 }
 
-variable "name" {}
+/**
+ * Variables
+ */
 
-variable "aliases" {
-  default = []
-}
+variable "name" {}
 
 variable "price_class" {
   default = "PriceClass_All"
@@ -29,13 +36,17 @@ variable "error_page" {
   default = "/500.html"
 }
 
+variable "certificate_arn" {}
+
+variable "zone_id" {}
+
 variable "logs_bucket" {
   default = ""
 }
 
-variable "certificate_arn" {}
-
-variable "zone_id" {}
+/**
+ * Outputs
+ */
 
 output "bucket_id" {
   value = aws_s3_bucket.main.id

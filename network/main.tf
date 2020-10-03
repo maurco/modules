@@ -1,14 +1,17 @@
 terraform {
-  required_version = "~> 0.12"
+  required_version = "~> 0.13"
 
   required_providers {
-    aws = "~> 2.66"
+    aws = {
+      version = "~> 3"
+      source  = "hashicorp/aws"
+    }
   }
 }
 
-locals {
-  subnet_count = length(data.aws_availability_zones.main.names)
-}
+/**
+ * Variables
+ */
 
 variable "name" {}
 
@@ -23,6 +26,14 @@ variable "logs_traffic_type" {
 variable "logs_bucket" {
   default = ""
 }
+
+locals {
+  subnet_count = length(data.aws_availability_zones.main.names)
+}
+
+/**
+ * Outputs
+ */
 
 output "vpc_id" {
   value = aws_vpc.main.id

@@ -10,9 +10,9 @@ resource "aws_route53_record" "main" {
   }
 }
 
-resource "aws_route53_record" "subdomains" {
-  count   = length(var.aliases)
-  name    = element(var.aliases, count.index)
+resource "aws_route53_record" "aliases" {
+  count   = length(var.from_aliases)
+  name    = element(var.from_aliases, count.index)
   zone_id = var.zone_id
   type    = "A"
 
