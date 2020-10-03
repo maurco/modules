@@ -4,6 +4,7 @@ resource "aws_cloudfront_distribution" "main" {
   wait_for_deployment = false
   price_class         = var.price_class
   aliases             = concat([var.from_name], var.from_aliases)
+  comment             = "Redirecting to ${var.to_name}"
 
   origin {
     origin_id   = "s3-origin"
@@ -14,11 +15,6 @@ resource "aws_cloudfront_distribution" "main" {
       https_port             = 443
       origin_ssl_protocols   = ["TLSv1"]
       origin_protocol_policy = "http-only"
-    }
-
-    custom_header {
-      name  = "Referer"
-      value = random_password.main.result
     }
   }
 

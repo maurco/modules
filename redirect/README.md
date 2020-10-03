@@ -3,7 +3,6 @@
 ## Providers
 
 - `aws`
-- `random`
 
 ## Variables
 
